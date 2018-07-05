@@ -1,0 +1,135 @@
+{% extends "website/_base.html" %} {% block main_content %}
+<div class="x_content">
+    <div class="form_wizard wizard_verticle">
+        <ul class="list-unstyled wizard_steps anchor">
+            <li>
+                <a href="#create_course" class="selected">
+                    <span class="step_no">Create Course</span>
+                </a>
+            </li>
+            <li>
+                <a href="#course" class="{% if course %} selected {% else %} disabled {% endif %}">
+                    <span class="step_no">List Course</span>
+                </a>
+            </li>
+        </ul>
+        <div class="stepContainer">
+            <div id="create_course" class="content" style="display: block">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2> Create Course </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <label>
+                                        Course Id:
+                                    </label>
+                                    <input type="text" name="course_id" required>
+                                    <br>
+                                    <label>
+                                        Name:
+                                    </label>
+                                    <input type="text" name="course_name" required>
+                                    <br>
+                                    <label>
+                                        Add grading rubric
+                                    </label>
+                                    <input type="textarea" name="grading_rubric" required>
+                                    <br>
+                                    <label>
+                                        Explain the appeal role
+                                    </label>
+                                    <input type="textarea" name="appeal_role" required>
+                                    <br>
+                                    <input type="button" value="Add Assignments" id="add_assignments">
+                                    <table class="homework_assignment table">
+                                    </table>
+                                    <br>
+                                    <input type="submit" value="Submit">
+                                    <br>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="course" class="content" style="display: {% if course %} block {% else %} none {% endif %}">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2> List Course </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <table class="table">
+                                    <tr>
+                                        <th>Course Name</th>
+                                        <th>Course Id</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    {% for c in course %}
+                                    <tr>
+                                        <td> {{ c.course_name }}</td>
+                                        <td>{{ c.course_id }}</td>
+                                        <td>
+                                            <a href="{% url 'investor__edit_course' c.id %}"> Goto Course Page</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#add_assignments").on('click', function () {
+        var currentAssignmentLength = $(".homework_assignment tr").length
+        currentAssignmentLength++;
+        var template = "<tr>";
+        template += "<td>";
+        template += "<label>Assignment " + currentAssignmentLength + " Deadline</label><br>"
+        template += '<input type="datetime-local" name="' + currentAssignmentLength + '___homework_deadline" required>'
+        template += '</td>'
+        template += '<td>'
+        template += '<label>Grading Deadline</label><br>'
+        template += '<input type="datetime-local" name="' + currentAssignmentLength + '___grade_deadline" required>'
+        template += '</td>'
+        template += '<td>'
+        template += '<label>Grouping Constraints</label><br>'
+        template += '<select name="' + currentAssignmentLength + '___constraints">'
+        template += '<option value="random"> Random Group </option>'
+//        template += '<option value="similar_schedule"> Group Similar Schedule </option>'
+//        template += '<option value="similar_commitment_level"> Group Similar Commitment Level </option>'
+//        template += '<option value="similar_skills"> Group Similar Skills </option>'
+//        template += '<option value="different_skills"> Group different Skills </option>'
+        template += '</select>'
+        template += '</td>'
+        template += '<td>'
+        template += '<label>Number of Group </label><br>'
+        template += '<input type="number" min="1" value="3" name="' + currentAssignmentLength + '___no_of_group" required>'
+        template += '</td>'
+        template += '<td>'
+        template += '<label>Number of Grader</label><br>'
+        template += '<input type="number" min="1" value="3" name="' + currentAssignmentLength + '___no_of_grader" required>'
+        template += '</td>'
+        template += '</tr>'
+
+        $(".homework_assignment").append(template)
+    })
+
+    initializeHomeWork()
+
+    function initializeHomeWork() {
+        $("#add_assignments").trigger('click')
+    }
+
+</script> {% endblock %}

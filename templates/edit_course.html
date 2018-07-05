@@ -1,0 +1,361 @@
+{% extends "website/_base.html" %} {% block main_content %}
+<div class="x_content">
+    <div class="form_wizard wizard_verticle">
+        <ul class="list-unstyled wizard_steps anchor">
+            <li>
+                <a href="#course_info" class="selected">
+                    <span class="step_no">Course Info</span>
+                </a>
+            </li>
+            <li>
+                <a href="#student_upload" class="selected">
+                    <span class="step_no">Student Upload</span>
+                </a>
+            </li>
+            <li>
+                <a href="#student_enrollment" class="selected">
+                    <span class="step_no">Enrollment</span>
+                </a>
+            </li>
+            <li>
+                <a href="#student_grouping" class="selected">
+                    <span class="step_no">Grouping</span>
+                </a>
+            </li>
+            <li>
+                <a href="#all_grades" class="selected">
+                    <span class="step_no">All Grades</span>
+                </a>
+            </li>
+            <li>
+                <a href="#peer_grades" class="selected">
+                    <span class="step_no">Peer Grades</span>
+                </a>
+            </li>
+        </ul>
+        <div class="stepContainer">
+            <div id="course_info" class="content" style="display: block">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2> Create Course </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <form method="POST" class="form-horizontal form-label-left">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Course Id:
+                                            <span class="required">*</span>
+                                        </label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="text" name="course_id" value="{{ course.course_id }}" class="form-control col-md-7 col-xs-12" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Course Name:
+                                            <span class="required">*</span>
+                                        </label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="text" name="course_name" value="{{ course.course_name }}" class="form-control col-md-7 col-xs-12" required>
+                                        </div>
+                                    </div>
+                                    <label>
+                                        Add grading rubric
+                                    </label>
+                                    <input type="textarea" name="grading_rubric" value="{{ course.grading_rubric }}" required>
+                                    <br>
+                                    <label>
+                                        Explain the appeal role
+                                    </label>
+                                    <input type="textarea" name="appeal_role" value="{{ course.appeal_role }}" required>
+                                    <br>
+                                    <input type="button" value="Add Assignments" id="add_assignments">
+                                    <table class="homework_assignment">
+                                        {% for c in homework %}
+                                        <tr>
+                                            <td>
+                                                <label> Assignment {{ c.homework_name }} Deadline </label>
+                                                <br>
+                                                <input type="datetime-local" name="{{ c.homework_name }}___homework_deadline" value="{{ c.homework_deadline|date:'c' }}"
+                                                    required>
+                                            </td>
+                                            <td>
+                                                <label> Grading Deadline </label>
+                                                <br>
+                                                <input type="datetime-local" name="{{ c.homework_name }}___grade_deadline" value="{{ c.grade_deadline|date:'c' }}" required>
+
+                                            </td>
+                                            <td>
+                                                <label> Grouping Constraints </label>
+                                                <br>
+                                                <select name="{{ c.homework_name }}___constraints" required>
+                                                    <option value="random" selected> Random Group</option>
+                                                    <!--<option value="similar_schedule"> Group Similar Schedule </option>-->
+                                                    <!--<option value="similar_commitment_level"> Group Similar Commitment Level </option>-->
+                                                    <!--<option value="similar_skills"> Group Similar Skills </option>-->
+                                                    <!--<option value="different_skills"> Group different Skills </option>-->
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <label>No Of Groups</label>
+                                                <br>
+                                                <input type="number" min="1" name="{{ c.homework_name }}___no_of_group" value="{{c.no_of_group}}">
+                                            </td>
+                                            <td>
+                                                <label>No Of Grader</label>
+                                                <br>
+                                                <input type="number" min="1" name="{{ c.homework_name }}___no_of_grader" value="{{c.no_of_grader}}">
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                    <br>
+                                    <input type="submit" value="Submit">
+                                    <br>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="student_upload" class="content" style="display: block">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2> Student Upload </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <form action="{% url 'investor__student_upload' course_pk %}" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="file" accept=".csv" required="True" name="student_upload">
+                                    <input type="submit" value="Upload">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="student_enrollment" class="content" style="display: block">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2> Course Student </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <table class="table">
+                                    <tr>
+                                        <th>Student Name</th>
+                                        <th>Enrollment Status</th>
+                                    </tr>
+                                    {% for c in enrolled_student %}
+                                    <tr>
+                                        <td>{{ c.user.name }}</td>
+                                        <td>
+                                            <input type="checkbox" value="{{ c.id }}" {% if c.enrollment_status %} checked {% endif %}>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="student_grouping" class="content" style="display: block">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>
+                                    Groups
+                                </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                    <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                        {% for c in group_grades %}
+                                        <li role="presentation" class="">
+                                            <a href="#assignment{{c}}" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Assigment {{c}}</a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    <div id="myTabContent" class="tab-content">
+                                        {% for c in group_grades %}
+                                        <div role="tabpanel" class="tab-pane fade" id="assignment{{c}}" aria-labelledby="home-tab">
+                                            <table class="table table-border">
+                                                <tr>
+                                                    <th>Group</th>
+                                                    <th>Grader</th>
+                                                    <th>Grade</th>
+                                                    <th>Explanation</th>
+                                                    <th>Appeal Grader</th>
+                                                    <th>Appeal Grade</th>
+                                                    <th>Appeal Explanation</th>
+                                                </tr>
+                                                {% for value in group_grades.c %}
+                                                    <td>dafd {{ value.group }}</td>
+                                                {% endfor %}
+                                            </table>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+            
+                            </div>
+                        </div>
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2> Student Grouping </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <form action="{% url 'investor__do_grouping' course_pk %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="submit" value="Do Grouping">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="all_grades" class="content" style="display: block">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2> All Grades </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                {% comment %}
+                                <table class="table">
+                                    <tr>
+                                        <th> Name</th>
+                                        {% for c in homework %}
+                                        <th>HW {{ c.homework_name }}</th>
+                                        {% endfor %}
+                                        <th> Total</th>
+                                    </tr>
+                                    {% for key,values in all_grades.items %}
+                                    <tr>
+                                        <td>{{ values.name }}</td>
+                                        {% for grade in values.grade %}
+                                        <td> {{ grade }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </table> {% endcomment %}
+                                <table id="group_all_grade" class="table">
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="peer_grades" class="content" style="display: block">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2> Peer Grades </h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="x_content">
+                                <h1>Personal Info</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $("#add_assignments").on('click', function () {
+        var currentAssignmentLength = $(".homework_assignment tr").length
+        currentAssignmentLength++;
+        var template = "<tr>";
+        template += "<td>";
+        template += "<label>Assignment " + currentAssignmentLength + " Deadline</label><br>"
+        template += '<input type="datetime-local" name="' + currentAssignmentLength + '___homework_deadline" required>'
+        template += '</td>'
+        template += '<td>'
+        template += '<label>Grading Deadline</label><br>'
+        template += '<input type="datetime-local" name="' + currentAssignmentLength + '___grade_deadline" required>'
+        template += '</td>'
+        template += '<td>'
+        template += '<label>Grouping Constraints</label><br>'
+        template += '<select name="' + currentAssignmentLength + '___constraints">'
+        template += '<option value="random"> Random Group </option>'
+        //        template += '<option value="similar_schedule"> Group Similar Schedule </option>'
+        //        template += '<option value="similar_commitment_level"> Group Similar Commitment Level </option>'
+        //        template += '<option value="similar_skills"> Group Similar Skills </option>'
+        //        template += '<option value="different_skills"> Group different Skills </option>'
+        template += '</select>'
+        template += '</td>'
+        template += '<td>'
+        template += '<label>Number of Group </label><br>'
+        template += '<input type="number" min="1" value="3" name="' + currentAssignmentLength + '___no_of_group" required>'
+        template += '</td>'
+        template += '<td>'
+        template += '<label>Number of Grader</label><br>'
+        template += '<input type="number" min="1" value="3" name="' + currentAssignmentLength + '___no_of_grader" required>'
+        template += '</td>'
+        template += '</tr>'
+
+        $(".homework_assignment").append(template)
+    })
+
+</script>
+<script>
+    $(document).on('ready', function () {
+
+        var columns = []
+        {% for c in homework %}
+        {% if forloop.first %}
+        var t = {}
+        t['title'] = 'Name'
+        columns.push(t)
+        {% endif %}
+
+        var t = {}
+        t['title'] = 'HW' + '{{ c.homework_name}}'
+        columns.push(t)
+
+        {% if forloop.last %}
+        var t = {}
+        t['title'] = 'Total'
+        columns.push(t)
+        {% endif %}
+
+        {% endfor %}
+        var datasource = []
+        {% for key, values in all_grades.items %}
+        t = []
+        t.push('{{ values.name }}')
+        {% for grade in values.grade %}
+        t.push('{{ grade }}')
+        {% endfor %}
+        datasource.push(t)
+        {% endfor %}
+
+        $('#group_all_grade').DataTable({
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            data: datasource,
+            columns: columns,
+            dom: "Bfrtip",
+        });
+    })
+</script> {% endblock %}

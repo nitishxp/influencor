@@ -1,0 +1,146 @@
+<form method="post" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>
+                <label>Director Name</label>
+            </td>
+            <td>
+                <input type="text" required name="director_name" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Director Number</label>
+            </td>
+            <td>
+                <input type="text" required name="director_contact" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Director Email</label>
+            </td>
+            <td>
+                <input type="email" name="director_email" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Company Name</label>
+            </td>
+            <td>
+                <input type="text" required name="company_name" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Company Registration Number</label>
+            </td>
+            <td>
+                <input type="text" required name="company_registration_number" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Company Address</label>
+            </td>
+            <td>
+                <input type="text" required name="company_address" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Company City</label>
+            </td>
+            <td>
+                <input type="text" required name="company_city" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Company Presentation</label>
+            </td>
+            <td>
+                <input type="file" required name="company_presentation" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Industry</label>
+            </td>
+            <td>
+                <input type="text" required name="industry" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Investor Name</label>
+            </td>
+            <td>
+                <input type="text" required name="investor_name" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Incorporation Date</label>
+            </td>
+            <td>
+                <input type="date" required name="incorporation_date" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Product Description</label>
+            </td>
+            <td>
+                <input type="text" required name="product_description" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Logo</label>
+            </td>
+            <td>
+                <input type="file" required name="logo" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Company URL</label>
+            </td>
+            <td>
+                <input type="text" required name="company_url" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Bank Name</label>
+            </td>
+            <td>
+                <input type="text" required name="bank_name" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Bank Account</label>
+            </td>
+            <td>
+                <input type="text" required name="bank_acc_no" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Bank IFSC</label>
+            </td>
+            <td>
+                <input type="text" required name="bank_ifsc_code" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="=" 2>
+                <input type="submit" value="Submit">
+            </td>
+        </tr>
+    </table>
+</form>

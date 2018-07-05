@@ -1,0 +1,46 @@
+<html>
+<form method="POST">
+    {% csrf_token %}
+    <label>First Name</label>
+    <input type="text" name="first_name" required>
+    <br>
+    <label>Last Name</label>
+    <input type="text" name="last_name" required>
+    <br>
+    <label> Email </label>
+    <input type="text" name="username" required>
+    <br>
+    <label> Password</label>
+    <input type="text" name="password" required>
+    <br>
+    <label> social_media</label>
+    <input type="text" name="social_media" required>
+    <br>
+    <label> physical_shows</label>
+    <select name="physical_shows" required>
+        <option value="yes"> Yes </option>
+        <option value="no"> No </option>
+    </select>
+    <br>
+    <label> stage_show_name</label>
+    <input type="text" name="stage_show_name" required>
+    <br>
+    <label> bank_name</label>
+    <input type="text" name="bank_name" required>
+    <br>
+    <label> bank_acc_no</label>
+    <input type="text" name="bank_acc_no" required>
+    <br>
+    <label> bank_ifsc_code</label>
+    <input type="text" name="bank_ifsc_code" required>
+    <br>
+    <label> social_media_url</label>
+    <input type="text" name="social_media_url" required>
+    <br>
+    <label> no_of_followers</label>
+    <input type="text" name="no_of_followers" required>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+
+</html>
