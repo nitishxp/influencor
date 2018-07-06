@@ -5,6 +5,7 @@ from django.shortcuts import render
 from models import CompanyDetails
 from grade.settings import BASE_DIR
 from django.http import HttpResponse
+from investor.models import InvestorCompanyLinkModel
 
 
 # Create your views here.
@@ -49,3 +50,14 @@ def process_attachments(f):
         destination.write(chunk)
     destination.close()
     return temp_dir + f_name
+
+
+def redirect_to_company_page(request, url):
+    current_investor_company_obj = InvestorCompanyLinkModel.objects.filter(
+        url=url)
+
+    if current_investor_company_obj.exists():
+        current_investor_company_obj = current_investor_company_obj.first()
+        fetch_company_url = current_investor_company_obj.company.company_url
+
+        print fetch_company_url
