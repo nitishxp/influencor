@@ -4,8 +4,11 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from models import CompanyDetails
 from grade.settings import BASE_DIR
-from django.http import HttpResponse
-from investor.models import InvestorCompanyLinkModel
+from django.http import HttpResponse, HttpResponseRedirect
+from investor.models import (
+    InvestorCompanyLinkModel,
+    InvestorCompanyUrlLinkVisitLog,
+)
 
 
 # Create your views here.
@@ -53,11 +56,20 @@ def process_attachments(f):
 
 
 def redirect_to_company_page(request, url):
+
     current_investor_company_obj = InvestorCompanyLinkModel.objects.filter(
         url=url)
 
     if current_investor_company_obj.exists():
         current_investor_company_obj = current_investor_company_obj.first()
-        fetch_company_url = current_investor_company_obj.company.company_url
 
-        print fetch_company_url
+        company = current_investor_company_obj.company
+        user = current_investor_company_obj.user
+
+        fetch_company_url = current_investor_company_obj.company.company_url
+        InvestorCompanyUrlLinkVisitLog.objects.create(
+            user=user, company=company)
+
+        return HttpResponseRedirect(fetch_company_url)
+    else:
+        return HttpResponse('Invalid URLS')

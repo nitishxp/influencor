@@ -43,5 +43,5 @@ def link_company(request, pk):
 
     url = request.get_host() + reverse(
         'company__redirect_to_company_page', args=(url, ))
-        
+
     return JsonResponse(url, safe=False)
