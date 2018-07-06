@@ -17,11 +17,8 @@ from investor.models import InvestorCompanyLinkModel
 
 
 def index(request):
-    return render(request, 'investor.html')
-
-def influencor(request):
-    
-    return render(request, 'influencor.html')
+    records = CompanyDetails.objects.all()
+    return render(request, 'influencor.html',{'records':records})
 
 def link_company(request, pk):
     company_obj = CompanyDetails.objects.get(pk=pk)
