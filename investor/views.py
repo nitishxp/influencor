@@ -14,3 +14,7 @@ from itertools import permutations
 
 def index(request):
     return render(request, 'investor.html')
+
+def influencor(request):
+    
+    return render(request, 'influencor.html')
