@@ -30,8 +30,9 @@ def save_company_details(request):
         company.company_presentation = process_attachments(
             request.FILES['company_presentation'])
         company.logo = process_attachments(request.FILES['logo'])
+        company.save()
 
-        return HttpResponse('sads')
+        return HttpResponse('Company Successfully Saved')
 
     return render(request, 'company.html')
 
