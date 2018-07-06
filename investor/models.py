@@ -15,5 +15,8 @@ class InvestorCompanyLinkModel(models.Model):
     url = models.TextField()
 
 
-class InvestorCompanyUrlLink(models.Model):
-    pass
+class InvestorCompanyUrlLinkVisitLog(models.Model):
+
+    user = models.ForeignKey(UserModel)
+    company = models.ForeignKey(CompanyDetails)
+    created_at = models.DateTimeField(auto_now=True)
