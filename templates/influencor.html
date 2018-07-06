@@ -1,0 +1,73 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<form method="post" action="">
+    {% csrf_token %}
+    <table width=800 align="center">
+        <tr>
+            <th>images</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Link</th>
+            <th>Permission</th>
+        </tr>
+        {% for rows in records %}
+        <tr>
+            <td><img src="{{ rows.logo }}" height="100" width="100"/></td>
+            <td>{{rows.company_name}}</td>
+            <td>{{rows.product_description}}</td>
+            <td><a href="{{rows.company_presentation}}"> Link </a></td>
+            <td><input type = "button" name="director_name" class="share_link" value="Get Shareable Link" id={{rows.id}} data-toggle="modal" data-target="#myModal"/></td>
+        </tr>
+        {% endfor %}
+    </table>
+</form>
+
+<div class="container">
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Shareable Link</h4>
+                </div>
+                <div class="modal-body">
+                <p id="link"></p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".share_link").on("click", function(){
+            id = $(this).attr("id").replace('/','')
+            console.log("id "+id)
+            protocol = window.location.protocol
+            console.log(protocol)
+            $.ajax({
+                url:"/investor/link_company/"+id,
+                method:"GET",
+                success:function(res){
+                    console.log(res)
+                    $('#link').text(protocol+'//'+res)
+                    $("#myModal").modal('show');
+                }
+            })
+        })
+    })
+
+</script>

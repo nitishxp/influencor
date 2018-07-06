@@ -14,12 +14,14 @@ from users.models import UserModel
 from itertools import permutations
 from company.models import CompanyDetails
 from investor.models import InvestorCompanyLinkModel
+from django.contrib.auth.decorators import login_required
 
-
+@login_required(login_url='/')
 def index(request):
     records = CompanyDetails.objects.all()
     return render(request, 'influencor.html',{'records':records})
 
+@login_required(login_url='/')
 def link_company(request, pk):
     company_obj = CompanyDetails.objects.get(pk=pk)
     investor = InvestorCompanyLinkModel.objects.filter(
